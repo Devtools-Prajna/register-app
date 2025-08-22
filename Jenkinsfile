@@ -59,5 +59,21 @@ pipeline {
                 '''
             }
         }
+
+         stage("Deploy to AKS") {
+            steps {
+                withCredentials([file(credentialsId: 'azure-aks-kubeconfig', variable: 'KUBECONFIG_FILE')]) {
+                    sh '''
+                        echo "Setting KUBECONFIG..."
+                        export KUBECONFIG=$KUBECONFIG_FILE
+
+                        echo "Deploying to AKS..."
+                        kubectl apply -f k8s/deployment.yaml
+                        kubectl apply -f k8s/service.yaml || true
+                        kubectl rollout status deployment/register-app-deployment
+                    '''
+                }
+            }
+        }
     }
 }
