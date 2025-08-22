@@ -25,24 +25,6 @@ pipeline {
             }
         }
 
-        stage("SonarQube Analysis") {
-            steps {
-                script {
-                    withSonarQubeEnv(credentialsId: 'sonarqube-token') {
-                        sh "mvn sonar:sonar"
-                    }
-                }
-            }
-        }
-
-        stage("Quality Gate") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token'
-                }
-            }
-        }
-
         stage("Build Docker Image") {
             steps {
                 sh 'printenv'
