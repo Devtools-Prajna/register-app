@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: register-app
+  name: register-app-deployment    # Updated to match rollout status command
 spec:
   replicas: 1
   selector:
@@ -13,7 +13,7 @@ spec:
         app: register-app
     spec:
       containers:
-      - name: register-app
-        image: prajnashetty529/register-app:latest
-        ports:
-        - containerPort: 8080
+        - name: register-app
+          image: prajnashetty529/register-app:latest
+          ports:
+            - containerPort: 8080
